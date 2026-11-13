@@ -41,7 +41,7 @@ python src/visualize.py    # t-SNE plot of that embedding
 
 ---
 
-# Original README
+
 
 Role2Vec
 ==============================
