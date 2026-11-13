@@ -6,7 +6,6 @@
 
 We use Role2Vec to embed the papers of the Cora citation network and ask: *which definition of a node's "structural role" gives the most useful embedding?* We train Role2Vec three times, changing only the role definition, and test how well each embedding predicts a paper's topic.
 
-> Built on the Role2Vec implementation by [Benedek Rozemberczki](https://github.com/benedekrozemberczki/role2vec), which implements *Learning Role-based Graph Embeddings* (Ahmed et al., 2018, [arXiv:1802.02896](https://arxiv.org/abs/1802.02896)). The original README is kept below.
 
 ## What we added
 
