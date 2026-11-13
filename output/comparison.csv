@@ -1,0 +1,5 @@
+Features,Description,Accuracy,Macro F1
+degree,Node degree (number of connections),0.443,0.403
+wl,Weisfeiler-Lehman labels (neighbourhood shape),0.494,0.465
+motif,Graphlet/motif counts (small-subgraph patterns),0.527,0.504
+baseline,Always guess the most common topic,0.302, 0.231
