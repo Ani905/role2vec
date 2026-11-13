@@ -1,3 +1,49 @@
+# Role2Vec on Cora: Comparing Structural Role Definitions
+
+**Network Science course project, PSG College of Technology, Coimbatore (November 2026)**
+
+**Team:** Anirudhan S (22PT03) and Shri Shakthivel M (22PT31)
+
+We use Role2Vec to embed the papers of the Cora citation network and ask: *which definition of a node's "structural role" gives the most useful embedding?* We train Role2Vec three times, changing only the role definition, and test how well each embedding predicts a paper's topic.
+
+> Built on the Role2Vec implementation by [Benedek Rozemberczki](https://github.com/benedekrozemberczki/role2vec), which implements *Learning Role-based Graph Embeddings* (Ahmed et al., 2018, [arXiv:1802.02896](https://arxiv.org/abs/1802.02896)). The original README is kept below.
+
+## What we added
+
+| File | What it does |
+|---|---|
+| `src/evaluate.py` | Trains a logistic-regression classifier to predict each paper's topic from its embedding (stratified 5-fold cross-validation) and reports accuracy and macro F1, plus a majority-class baseline. |
+| `src/compare.py` | Trains Role2Vec with each role definition (`degree`, `wl`, `motif`), evaluates each, and writes `output/comparison.csv`. |
+| `src/visualize.py` | Projects the embedding to 2-D with t-SNE and colours each paper by topic (`output/cora_role2vec_tsne.png`). |
+
+## Results
+
+| Role definition | What it describes | Accuracy | Macro F1 |
+|---|---|---|---|
+| Majority baseline (always guess the most common topic) | – | 30.2% | 0.066 |
+| Degree | number of neighbours | 44.3% | 0.403 |
+| Weisfeiler–Lehman labels | shape of the 2-hop neighbourhood | 49.4% | 0.465 |
+| **Motif (graphlet orbit) counts** | small-subgraph patterns | **52.7%** | **0.504** |
+
+- All three embeddings beat the baseline, so graph structure alone (no paper text) carries topic information.
+- Richer role definitions work better: motif > WL > degree.
+- The t-SNE plot shows only partial grouping by topic. Topic in a citation network depends mostly on *where* a paper sits, while Role2Vec is designed to capture *what part* a node plays, so it suits structural tasks better than topic classification.
+
+Each setting was trained once with the default hyperparameters, so small differences (e.g. WL vs motif) should be checked over several runs.
+
+## How to run
+
+```
+pip install networkx tqdm numpy pandas texttable scipy gensim scikit-learn matplotlib
+python src/compare.py      # trains all three variants and prints the results table
+python src/main.py         # trains the default (WL) embedding
+python src/visualize.py    # t-SNE plot of that embedding
+```
+
+---
+
+# Original README
+
 Role2Vec
 ==============================
 [![Arxiv](https://img.shields.io/badge/ArXiv-1802.02896-orange.svg?color=blue)](https://arxiv.org/abs/1802.02896) [![codebeat badge](https://codebeat.co/badges/13fe1050-b943-4095-b753-2896abc70f58)](https://codebeat.co/projects/github-com-benedekrozemberczki-role2vec-master) [![repo size](https://img.shields.io/github/repo-size/benedekrozemberczki/role2vec.svg)](https://github.com/benedekrozemberczki/role2vec/archive/master.zip) [![benedekrozemberczki](https://img.shields.io/twitter/follow/benrozemberczki?style=social&logo=twitter)](https://twitter.com/intent/follow?screen_name=benrozemberczki)
